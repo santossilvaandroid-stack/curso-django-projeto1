@@ -290,3 +290,17 @@ h6 {
 .preparation-steps pre {
   margin: 2rem 0;
 }
+
+/* Generics */
+
+.center {
+  text-align: center;
+}
+
+.m-x {
+  margin: 0 var(--spacing-gutter-medium);
+}
+
+.m-y {
+  margin: var(--spacing-gutter-medium) 0;
+}
