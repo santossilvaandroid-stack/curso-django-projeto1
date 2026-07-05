@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.urls import resolve, reverse
 from recipes import views
 from recipes.models import Category, Recipe, User
-from .test_recipe_base import RecipeTestBase
+from .test_recipe_base import Recipe, RecipeTestBase # type: ignore
 
 class RecipeViewsTest(RecipeTestBase):
     def tearDown(self) -> None:
@@ -55,6 +55,7 @@ class RecipeViewsTest(TestCase):
 
     def test_recipe_home_template_loads_recipes(self):
         
+        self.make_recipe()
         response = self.client.get(reverse('recipes:home'))
         content = response.content.decode('utf-8')
         response_context_recipes = response.context['recipes']
