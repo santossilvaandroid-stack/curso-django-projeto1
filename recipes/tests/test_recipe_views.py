@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.urls import resolve, reverse
 from recipes import views
 from recipes.models import Category, Recipe, User
-from .test_recipe_base import Recipe, RecipeTestBase # type: ignore
+from .test_recipe_base import RecipeTestBase # type: ignore
 
 class RecipeViewsTest(RecipeTestBase):
     def tearDown(self) -> None:
