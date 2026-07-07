@@ -119,8 +119,17 @@ class RecipeViewsTest(TestCase):
         self.assertIn(needed_title, content)
 
 
-    def test_recipe_category_view_returns_404_if_no_recipes_found(self):
+    def test_recipe_detail_template_dont_load_recipe_not_published(self):
+        """Test recipe is_published False dont show"""
+        # Need a recipe for this test
+        recipe = self.make_recipe(is_published=False)
+
         response = self.client.get(
-            reverse('recipes:category', kwargs={'category_id': 1000})
+            reverse(
+                'recipes:recipe',
+                kwargs={
+                    'id': recipe.id
+                }
+            )
         )
         self.assertEqual(response.status_code, 404)
