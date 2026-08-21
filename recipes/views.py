@@ -1,19 +1,36 @@
+from django.core.paginator import Paginator
 from django.shortcuts import get_list_or_404, get_object_or_404, render
 from utils.recipes.factory import make_recipe
 from recipes.models import Recipe
 from django.http.response import Http404
 from django.db.models import Q
+from utils.pagination import make_pagination_range
 
 
 # Create your views here.
 def home(request):
-        recipes = Recipe.objects.filter(
-        is_published=True
+    recipes = Recipe.objects.filter(
+    is_published=True
     ).order_by('-id')
 
-        return render(request, 'recipes/pages/home.html', context={
-            'recipes': recipes,
-        })
+    try:
+        current_page = int(request.GET.get('page', 1))
+    except ValueError:
+        current_page = 1
+
+    paginator = Paginator(recipes, 9)
+    page_obj = paginator.get_page(current_page)
+
+    pagination_range = make_pagination_range(
+        paginator.page_range,
+        4,
+        current_page
+    )
+
+    return render(request, 'recipes/pages/home.html', context={
+        'recipes': page_obj,
+        'pagination_range': pagination_range
+    })
 
 
 def category(request, category_id):
