@@ -7,6 +7,7 @@ from django.db.models import Q
 from utils.pagination import make_pagination_range
 from utils.pagination import make_pagination
 import os
+from django.contrib import messages
 
 PER_PAGE = int(os.environ.get('PER_PAGE', 6))
 
@@ -15,6 +16,8 @@ def home(request):
     recipes = Recipe.objects.filter(
     is_published=True
     ).order_by('-id')
+
+    messages.success(request, 'Epa, você foi pesquisar algo que eu vi.')
 
     page_obj, pagination_range = make_pagination(request, recipes, PER_PAGE)
 
@@ -63,11 +66,14 @@ def search(request):
     ).order_by('-id')
 
     page_obj, pagination_range = make_pagination(request, recipes, PER_PAGE)
+
+    query_params = request.GET.copy()
+    query_params.pop('page', None)
     
     return render(request, 'recipes/pages/search.html', {
         'page_title': f'Search for "{search_term}" |',
         'search_term': search_term,
         'recipes': page_obj,
         'pagination_range': pagination_range,
-        'additional_url_query': f'&q={search_term}',
+        'additional_url_query': f'&{query_params.urlencode()}',
     })

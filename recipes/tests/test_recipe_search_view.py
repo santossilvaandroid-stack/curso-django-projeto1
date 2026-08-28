@@ -51,3 +51,19 @@ class RecipeSearchViewTest(RecipeTestBase):
 
         self.assertIn(recipe1, response_both.context['recipes'])
         self.assertIn(recipe2, response_both.context['recipes'])
+
+    def test_recipe_search_pagination_keeps_search_term(self):
+        for recipe_number in range(views.PER_PAGE + 1):
+            self.make_recipe(
+                slug=f'carne-{recipe_number}',
+                title=f'Recipe carne {recipe_number}',
+                author_data={'username': f'carne-{recipe_number}'},
+            )
+
+        search_url = reverse('recipes:search')
+        response = self.client.get(f'{search_url}?q=carne')
+
+        self.assertContains(response, '?page=2&amp;q=carne')
+
+        page_two_response = self.client.get(f'{search_url}?page=2&q=carne')
+        self.assertEqual(page_two_response.status_code, 200)
