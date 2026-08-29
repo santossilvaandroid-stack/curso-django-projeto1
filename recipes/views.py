@@ -7,7 +7,7 @@ from django.db.models import Q
 from utils.pagination import make_pagination_range
 from utils.pagination import make_pagination
 import os
-from django.contrib import messages
+#from django.contrib import messages
 
 PER_PAGE = int(os.environ.get('PER_PAGE', 6))
 
@@ -17,7 +17,11 @@ def home(request):
     is_published=True
     ).order_by('-id')
 
+    '''
+    messages.error(request, 'Epa, você foi pesquisar algo que eu vi.')
     messages.success(request, 'Epa, você foi pesquisar algo que eu vi.')
+    messages.info(request, 'Epa, você foi pesquisar algo que eu vi.')
+    '''
 
     page_obj, pagination_range = make_pagination(request, recipes, PER_PAGE)
 
