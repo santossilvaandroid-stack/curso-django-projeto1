@@ -56,8 +56,8 @@ class AuthorRegisterFormIntegrationTest(DjangoTestCase):
             'first_name': 'first',
             'last_name': 'last',
             'email': 'email@anyemail.com',
-            'password': '1',
-            'password2': '1',
+            'password': '@A123abc123',
+            'password2': '@A123abc123',
         }
         return super().setUp(*args, **kwargs)
 
@@ -113,7 +113,7 @@ class AuthorRegisterFormIntegrationTest(DjangoTestCase):
         url = reverse('authors:create')
         response = self.client.post(url, data=self.form_data, follow=True)
 
-        self.assertNotIn(msg, response.context['form'].errors.get('password'))
+        self.assertNotIn('password', response.context['form'].errors)
 
     def test_password_and_password_confirmation_are_equal(self):
         self.form_data['password'] = '@A123abc123'
