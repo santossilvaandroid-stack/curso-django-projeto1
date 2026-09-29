@@ -1,9 +1,10 @@
 import time
-
+import pytest
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from utils.browser import make_chrome_browser
 
 
+@pytest.mark.functional_test
 class RecipeBaseFunctionalTest(StaticLiveServerTestCase):
     def setUp(self) -> None:
         self.browser = make_chrome_browser()
