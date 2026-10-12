@@ -7,8 +7,11 @@ class AuthorRecipeForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        add_attr(self.fields.get('preparation_steps'), 'class', 'span-2')
-        add_attr(self.fields.get('cover'), 'class', 'span-2')
+        for field_name in (
+            'preparation_steps',
+            'cover',
+        ):
+            add_attr(self.fields[field_name], 'class', 'span-2')
 
 
     class Meta:
@@ -16,12 +19,9 @@ class AuthorRecipeForm(forms.ModelForm):
         fields = 'title', 'description', 'preparation_time', \
             'preparation_time_unit', 'servings', 'servings_unit', \
             'preparation_steps', 'cover'
+        
         widgets = {
-            'cover': forms.FileInput(
-                attrs={
-                    'class': 'span-2'
-                }
-            ),
+            'cover': forms.FileInput(),
             'servings_unit': forms.Select(
                 choices=(
                     ('Porções', 'Porções'),
