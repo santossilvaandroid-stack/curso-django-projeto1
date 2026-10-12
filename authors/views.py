@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.urls import reverse
 from django.contrib.auth import authenticate, login
 from recipes.models import Recipe
+from authors.forms.recipe_form import AuthorRecipeForm
 
 # Create your views here.
 def register_view(request):
@@ -88,15 +89,21 @@ def dashboard_recipe_edit(request, id):
         is_published=False,
         author=request.user,
         pk=id,
-    )
+    ).first()
 
     if not recipe:
         raise Http404()
+
+    form = AuthorRecipeForm(
+        data=request.POST or None,
+        instance=recipe
+    )
 
     return render(
         request,
         'authors/pages/dashboard_recipe.html',
         context={
+            'form': form
 
         }
     )
