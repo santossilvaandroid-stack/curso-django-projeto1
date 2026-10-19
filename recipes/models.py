@@ -13,14 +13,6 @@ class Category(models.Model):
     def get_absolute_url(self):
         return reverse('recipes:recipe', args=(self.id,))
 
-
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            slug = f'{slugify(self.title)}'
-            self.slug = slug
-
-        return super().save(*args, **kwargs)
-
 # Create your models here.
 '''
 class Recipe(models.Model):
