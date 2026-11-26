@@ -6,11 +6,28 @@ from django.urls import reverse
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from recipes.models import Recipe
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
+
+@method_decorator(
+    login_required(login_url='authors:login', redirect_field_name='next'),
+    name='dispatch'
+)
 
 class DashboardRecipe(LoginRequiredMixin, View):
     login_url = 'authors:login'
     redirect_field_name = 'next'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def setup(self, *args, **kwargs):
+        return super().setup(*args, **kwargs)
+
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+    
     def get_recipe(self, id=None):
         recipe = None
 
